@@ -29,20 +29,20 @@ public class Pacman : Entity
     {
      if((DateTime.Now - elapsedTime).TotalMilliseconds >= 250)
         {
-            if (moveDirection == MoveDirection.RIGHT && )
+            if (moveDirection == MoveDirection.RIGHT && !DoesIntersect(position))
             {
                 position.X += (float)(20f);
             }
-            if (moveDirection == MoveDirection.LEFT && position.X > 25)
+            if (moveDirection == MoveDirection.LEFT && !DoesIntersect(position))
             {
                 position.X -= (float)(20f);
             }
 
-            if (moveDirection == MoveDirection.UP && position.Y > 25)
+            if (moveDirection == MoveDirection.UP && !DoesIntersect(position))
             {
                 position.Y -= (float)(20f);
             }
-            if (moveDirection == MoveDirection.DOWN && position.Y < 540)
+            if (moveDirection == MoveDirection.DOWN && !DoesIntersect(position))
             {
                 position.Y += (float)(20f);
             }
@@ -78,8 +78,8 @@ public class Pacman : Entity
 
     private bool DoesIntersect(Vector2 pos)
     {
-        Vector2 playerMapPos = Vector2.Zero;
-        var playerRect = new WpfApp1.src.helpers.Rectangle(playerMapPos.X, playerMapPos.Y, 1, 1);
+        Vector2 playerMapPos = MainWindow.ToMapPos(pos);
+        var playerRect = new WpfApp1.src.helpers.Rectangle(playerMapPos.X, playerMapPos.Y, .5f, .5f);
         
         foreach (var wall in Constants.walls)
         {
