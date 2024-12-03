@@ -1,8 +1,8 @@
 ﻿namespace WpfApp1.src.helpers
 {
-    class Rectangle
+    public class Rectangle
     {
-        float x, y, width, height;
+        public float x, y, width, height;
 
         public Rectangle(float x, float y, float width, float height)
         {
