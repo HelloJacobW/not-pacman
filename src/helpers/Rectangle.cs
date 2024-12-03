@@ -20,7 +20,7 @@
                      other.y + other.height <= y);
         }
 
-        public bool Intersects(float x, float y, float width float height)
+        public bool Intersects(float x, float y, float width, float height)
         {
             return Intersects(new Rectangle(x, y, width, height));
         }
