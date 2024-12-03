@@ -10,12 +10,12 @@ public abstract class Entity
 
     public abstract void update(double deltaTime);
 
-    public void draw()
-    {
+    public void draw() {
         Canvas.SetLeft(SpriteShape, position.X);
-        Canvas.SetRight(SpriteShape, position.Y);
+        Canvas.SetTop(SpriteShape, position.Y);
     }
 
+    // Remove self from the list of entities and remove it from the canvas
     public void destroy()
     {
         MainWindow.entities.Remove(this);
