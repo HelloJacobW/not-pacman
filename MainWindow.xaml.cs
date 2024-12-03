@@ -54,12 +54,13 @@ namespace WpfApp1
             //  - add the walls
             foreach (var wall in Constants.walls)
             {
-                entities.Add(new WallEntity(new Vector2((float)((wall.x * 20) + 7.5), (float) ((wall.y * 20) + 7.5)), (float)(wall.width * 20) - 5, (wall.height * 20) - 5));
-            //    entities.Add(new WallEntity(
-            //            new Vector2(
-            //                ),
-            //            (float)(wall.width * 20) - 5, (wall.height * 20) - 5)
-            //        ));
+                var rel = ToScreenPos(new Vector2(wall.x, wall.y));
+
+                entities.Add(new WallEntity(
+                        new Vector2(rel.X-2.5f, rel.Y-2.5f),
+                        (float)(wall.width * 20) - 5, 
+                        (float)(wall.height * 20) - 5
+                    ));
                 board[(int)wall.x, (int)wall.y] = TileType.WALL;
             }
 
@@ -118,8 +119,8 @@ namespace WpfApp1
         public static Vector2 ToMapPos(Vector2 pos)
         {
             return new(
-                    (pos.X - 10) / 20,
-                    (pos.Y - 10) / 20
+                   (int)(pos.X - 10) / 20,
+                   (int)(pos.Y - 10) / 20
                 );
         }
 
