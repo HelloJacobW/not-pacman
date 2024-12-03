@@ -2,6 +2,6 @@
 {
     public enum TileType
     {
-        EMPTY, DOT, POWERUP
+        EMPTY, DOT, POWERUP, WALL
     }
 }
