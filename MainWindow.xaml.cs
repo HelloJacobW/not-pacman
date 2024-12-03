@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using WpfApp1.src;
 using WpfApp1.src.board;
@@ -100,7 +102,6 @@ namespace WpfApp1
         }
 
 
-
         public class GameCanvas : Canvas
         {
             public GameCanvas() : base()
@@ -112,6 +113,16 @@ namespace WpfApp1
             {
                 base.OnRender(drawingContext);
             }
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            GetEntityByType<Pacman>().OnKeyDown(e);
+        }
+
+        private void Window_KeyUp(object sender, KeyEventArgs e)
+        {
+            GetEntityByType<Pacman>().OnKeyUp(e);
         }
     }
 }
