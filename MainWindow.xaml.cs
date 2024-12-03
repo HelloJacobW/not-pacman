@@ -4,7 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Shapes;
+using WpfApp1.src;
 using WpfApp1.src.board;
 using WpfApp1.src.entities.impl;
 
@@ -18,20 +18,7 @@ namespace WpfApp1
         public static List<Entity> entities = new List<Entity>();
         public static TileType[,] board = new TileType[28,36];
 
-        public static List<src.helpers.Rectangle> walls = new List<src.helpers.Rectangle> {
-            // four main walls
-            new(0, 0, 28, 1),
-            new(0, 0, 1, 36),
-            new(27, 0, 1, 36),
-            new(0, 35, 28, 1),
-            
-            new(2, 2, 4, 2),
-            new(7, 2, 5, 2),
-            new(13, 0, 2, 3),
-            new(16, 2, 5, 2),
-            new(22, 2, 4, 2),
 
-        };
 
         public MainWindow()
         {
@@ -62,7 +49,7 @@ namespace WpfApp1
             }
 
             //  - add the walls
-            foreach (var wall in walls)
+            foreach (var wall in Constants.walls)
             {
                 entities.Add(new WallEntity(new System.Numerics.Vector2((float)((wall.x * 20) + 7.5), (float) ((wall.y * 20) + 7.5)), (float)(wall.width * 20) - 5, (wall.height * 20) - 5));
                 board[(int)wall.x, (int)wall.y] = TileType.WALL;
@@ -104,7 +91,7 @@ namespace WpfApp1
         {
             src.helpers.Rectangle rect = new(x, y, 1, 1);
 
-            foreach (var entity in walls) {
+            foreach (var entity in Constants.walls) {
                 if (entity.Intersects(rect))
                     return true;
             }
