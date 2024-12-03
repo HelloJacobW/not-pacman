@@ -5,7 +5,7 @@ using WpfApp1;
 
 public abstract class Entity
 {
-    public Shape SpriteShape = new System.Windows.Shapes.Rectangle();
+    public Shape SpriteShape = new Rectangle();
     protected Vector2 position = Vector2.Zero;
 
     public abstract void update(double deltaTime);
