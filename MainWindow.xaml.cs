@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Numerics;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using WpfApp1.src;
 using WpfApp1.src.board;
@@ -44,14 +47,19 @@ namespace WpfApp1
                         continue;
 
                     board[i, j] = TileType.DOT;
-                    entities.Add(new DotEntity(new System.Numerics.Vector2((i*20) + 10, (j*20) + 10)));
+                    entities.Add(new DotEntity(ToScreenPos(new Vector2(i, j))));
                 }
             }
 
             //  - add the walls
             foreach (var wall in Constants.walls)
             {
-                entities.Add(new WallEntity(new System.Numerics.Vector2((float)((wall.x * 20) + 7.5), (float) ((wall.y * 20) + 7.5)), (float)(wall.width * 20) - 5, (wall.height * 20) - 5));
+                entities.Add(new WallEntity(new Vector2((float)((wall.x * 20) + 7.5), (float) ((wall.y * 20) + 7.5)), (float)(wall.width * 20) - 5, (wall.height * 20) - 5));
+            //    entities.Add(new WallEntity(
+            //            new Vector2(
+            //                ),
+            //            (float)(wall.width * 20) - 5, (wall.height * 20) - 5)
+            //        ));
                 board[(int)wall.x, (int)wall.y] = TileType.WALL;
             }
 
@@ -99,6 +107,21 @@ namespace WpfApp1
             return false;
         }
 
+        public static Vector2 ToScreenPos(Vector2 pos)
+        {
+            return new(
+                    (pos.X * 20) + 10,
+                    (pos.Y * 20 + 10)
+                );
+        }
+
+        public static Vector2 ToMapPos(Vector2 pos)
+        {
+            return new(
+                    (pos.X - 10) / 20,
+                    (pos.Y - 10) / 20
+                );
+        }
 
 
         public class GameCanvas : Canvas
@@ -112,6 +135,16 @@ namespace WpfApp1
             {
                 base.OnRender(drawingContext);
             }
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            GetEntityByType<Pacman>().OnKeyDown(e);
+        }
+
+        private void Window_KeyUp(object sender, KeyEventArgs e)
+        {
+            GetEntityByType<Pacman>().OnKeyUp(e);
         }
     }
 }

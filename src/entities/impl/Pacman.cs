@@ -40,5 +40,11 @@ public class Pacman : Entity
     }
 
 
-}
+    public void OnKeyDown(KeyEventArgs e)
+    {
+    }
 
+    public void OnKeyUp(KeyEventArgs e)
+    {
+    }
+}
