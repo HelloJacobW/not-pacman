@@ -33,41 +33,42 @@ public class Pacman : Entity
 
      if((DateTime.Now - elapsedTime).TotalMilliseconds >= 250)
         {
-            Vector2 futurePos = position;
-            Vector2 playerMapPos = MainWindow.ToMapPos(position);
+            Vector2 futurePos = MainWindow.ToMapPos(position);
+            //Vector2 playerMapPos = MainWindow.ToMapPos(position);
 
             if (moveDirection == MoveDirection.RIGHT)
             {
-                futurePos.X += (float)(20f);
+                futurePos.X += 1;
             }
-            if (moveDirection == MoveDirection.LEFT && playerMapPos.X != 0)
+            if (moveDirection == MoveDirection.LEFT && futurePos.X != 0)
             {
-                futurePos.X -= (float)(20f);
+                futurePos.X -= 1;
             }
 
-            if (moveDirection == MoveDirection.UP && playerMapPos.Y != 0)
+            if (moveDirection == MoveDirection.UP && futurePos.Y != 0)
             {
-                futurePos.Y -= (float)(20f);
+                futurePos.Y -= 1;
             }
             if (moveDirection == MoveDirection.DOWN)
             {
-                futurePos.Y += (float)(20f);
+                futurePos.Y += 1;
             }
 
             if (!DoesIntersect(futurePos))
             {
-                position = futurePos;
+                position = MainWindow.ToScreenPos(futurePos);
             }
             
             elapsedTime = DateTime.Now;
 
-            if (MainWindow.board[(int) playerMapPos.X,(int) playerMapPos.Y] == TileType.DOT)
+            if (MainWindow.board[(int) futurePos.X,(int) futurePos.Y] == TileType.DOT)
             {
                 foreach (var dot in MainWindow.GetEntitiesByType<DotEntity>())
                 {
                     Vector2 dotMapPos = MainWindow.ToMapPos(dot.position);
 
-                    if (dotMapPos == position)
+                    var playerMapPos = MainWindow.ToMapPos(position);
+                    if (dotMapPos.X == playerMapPos.X && dotMapPos.Y == playerMapPos.Y)
                     {
                         Debug.Write($"destroyed {dot}");
                         dot.destroy();
@@ -104,9 +105,8 @@ public class Pacman : Entity
 
     private bool DoesIntersect(Vector2 pos)
     {
-        Vector2 playerMapPos = MainWindow.ToMapPos(pos);
-        Debug.WriteLine(playerMapPos.X+","+playerMapPos.Y);
-        var playerRect = new WpfApp1.src.helpers.Rectangle(playerMapPos.X+1, playerMapPos.Y+1, .1f, .1f);
+        Debug.WriteLine(pos.X+$" ({pos.X}), "+ pos.Y + $" ({pos.Y})");
+        var playerRect = new WpfApp1.src.helpers.Rectangle(pos.X+0.5f, pos.Y+0.5f, .1f, .1f);
         
         foreach (var wall in Constants.walls)
         {
