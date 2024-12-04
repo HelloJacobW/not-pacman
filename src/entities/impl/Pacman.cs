@@ -66,11 +66,11 @@ public class Pacman : Entity
                 foreach (var dot in MainWindow.GetEntitiesByType<DotEntity>())
                 {
                     Vector2 dotMapPos = MainWindow.ToMapPos(dot.position);
+                //    Debug.WriteLine(dotMapPos == playerMapPos);
 
-                    var playerMapPos = MainWindow.ToMapPos(position);
-                    if (dotMapPos.X == playerMapPos.X && dotMapPos.Y == playerMapPos.Y)
+                    if (dotMapPos == playerMapPos)
                     {
-                        Debug.Write($"destroyed {dot}");
+                        Debug.WriteLine($"destroyed {dot}");
                         dot.destroy();
                     }
                 }
