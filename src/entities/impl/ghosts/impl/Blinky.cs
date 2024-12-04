@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Numerics;
 using System.Windows.Documents;
 using System.Windows.Media;
 using WpfApp1.src.entities.impl.ghosts.impl.helpers;
@@ -11,6 +12,7 @@ namespace WpfApp1.src.entities.impl.ghosts
     {
         private List<PathfindingSystem.ResultPoint> path = null;
         private DateTime lastMoveTime = DateTime.MinValue;
+        private Vector2 generatedPathForTarget = Vector2.Zero;
 
         public Blinky() : base() {
             SpriteShape.Fill = Brushes.Red;
@@ -19,17 +21,13 @@ namespace WpfApp1.src.entities.impl.ghosts
 
         public override void update(double deltaTime)
         {
-            if (path ==  null)
+            Pacman pacman = MainWindow.GetEntityByType<Pacman>();
+            Vector2 pacmanMapPos = MainWindow.ToMapPos(pacman.position);
+
+            if (path ==  null || (pacmanMapPos.X != generatedPathForTarget.X || pacmanMapPos.Y != generatedPathForTarget.Y))
             {
-                Pacman pacman = MainWindow.GetEntityByType<Pacman>();
 
-                if (pacman == null)
-                {
-                    Debug.WriteLine("Pacman is nulll...");
-                    return;
-                }
-
-                var bs = GetBoardState();
+                var bs = PathfindingSystem.GetBoardState();
 
                 path = PathfindingSystem.TryGetPath(
                         bs,
@@ -37,46 +35,35 @@ namespace WpfApp1.src.entities.impl.ghosts
                         MainWindow.ToMapPos(pacman.position)
                     );
 
-                Debug.WriteLine($"Generated path: {path} ({path != null})");
+                generatedPathForTarget = pacmanMapPos;
+            }
+
+            if ( path != null && (DateTime.Now - lastMoveTime).TotalMilliseconds > 250 ) {
+                if (path.Count == 0)
+                {
+                    path = null;
+                    return;
+                }
+
+                var move = path[0];
+                path.Remove(move);
+
+                Vector2 mapPos = MainWindow.ToMapPos(position);
+
+                switch (move)
+                {
+                    case PathfindingSystem.ResultPoint.UP: mapPos.Y -= 1; break;
+                    case PathfindingSystem.ResultPoint.DOWN: mapPos.Y += 1; break;
+                    case PathfindingSystem.ResultPoint.LEFT: mapPos.X -= 1; break;
+                    case PathfindingSystem.ResultPoint.RIGHT: mapPos.X += 1; break;
+                    default:
+                        Debug.Write("How did we get here??");
+                        break;
+                }
+
+                position = MainWindow.ToScreenPos(mapPos);
+                lastMoveTime = DateTime.Now;
             }
         }
-
-        private List<List<PathfindingSystem.TileState>> GetBoardState()
-        {
-            int boardWidth = 28; // Assuming the width of the board
-            int boardHeight = 31; // Assuming the height of the board
-
-            // Initialize the board with false values
-            List<List<PathfindingSystem.TileState>> board = new List<List<PathfindingSystem.TileState>>();
-            for (int y = 0; y < boardHeight; y++)
-            {
-                List<PathfindingSystem.TileState> row = new List<PathfindingSystem.TileState>();
-                for (int x = 0; x < boardWidth; x++)
-                {
-                    row.Add(PathfindingSystem.TileState.OPEN);
-                }
-                board.Add(row);
-            }
-
-            // Mark the spots occupied by walls as true
-            foreach (var wall in Constants.walls)
-            {
-                int startX = (int)wall.x;
-                int startY = (int)wall.y;
-                int endX = (int)(wall.x + wall.width);
-                int endY = (int)(wall.y + wall.height);
-
-                for (int y = startY; y < endY; y++)
-                {
-                    for (int x = startX; x < endX; x++)
-                    {
-                        board[y][x] = PathfindingSystem.TileState.BLOCKED;
-                    }
-                }
-            }
-
-            return board;
-        }
-
     }
 }
