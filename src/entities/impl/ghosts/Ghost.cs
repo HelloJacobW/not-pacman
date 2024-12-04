@@ -5,7 +5,9 @@ namespace WpfApp1.src.entities.impl.ghosts
 {
     abstract class Ghost : Entity
     {
-        protected Vector2 position = new Vector2(0, 0);
-        protected Brush color = null;
+        public Ghost() {
+            SpriteShape.Width = 20;
+            SpriteShape.Height = 20;
+        }
     }
 }

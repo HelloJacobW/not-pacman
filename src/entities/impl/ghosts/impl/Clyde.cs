@@ -4,8 +4,7 @@ namespace WpfApp1.src.entities.impl.ghosts
 {
     class Clyde : Ghost
     {
-        public Clyde() {
-            color = Brushes.Orange;
+        public Clyde() : base() {
         }
 
         public override void update(double deltaTime)

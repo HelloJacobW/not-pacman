@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 
 namespace WpfApp1.src.entities.impl.ghosts.impl.helpers
 {
@@ -130,33 +131,6 @@ namespace WpfApp1.src.entities.impl.ghosts.impl.helpers
                 GScore = gScore;
                 FScore = fScore;
             }
-        }
-
-        // Vector2 class for positions (simplified version)
-        public struct Vector2
-        {
-            public float X { get; set; }
-            public float Y { get; set; }
-
-            public Vector2(float x, float y)
-            {
-                X = x;
-                Y = y;
-            }
-
-            public static Vector2 operator +(Vector2 v1, Vector2 v2)
-            {
-                return new Vector2(v1.X + v2.X, v1.Y + v2.Y);
-            }
-
-            public bool Equals(Vector2 other)
-            {
-                return X == other.X && Y == other.Y;
-            }
-
-            // Override GetHashCode and Equals for proper usage in collections
-            public override int GetHashCode() => X.GetHashCode() ^ Y.GetHashCode();
-            public override bool Equals(object obj) => obj is Vector2 other && Equals(other);
         }
     }
 }

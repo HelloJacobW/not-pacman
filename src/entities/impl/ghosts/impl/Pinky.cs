@@ -4,8 +4,7 @@ namespace WpfApp1.src.entities.impl.ghosts
 {
     class Pinky : Ghost
     {
-        public Pinky() {
-            color = Brushes.Pink;
+        public Pinky() : base() {
         }
 
         public override void update(double deltaTime)

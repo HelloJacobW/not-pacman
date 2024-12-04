@@ -4,8 +4,7 @@ namespace WpfApp1.src.entities.impl.ghosts
 {
     class Inky : Ghost
     {
-        public Inky() {
-            color = Brushes.Blue;
+        public Inky() : base() {
         }
 
         public override void update(double deltaTime)
