@@ -26,13 +26,17 @@ namespace WpfApp1.src.entities.impl.ghosts
 
             if (path ==  null || (pacmanMapPos.X != generatedPathForTarget.X || pacmanMapPos.Y != generatedPathForTarget.Y))
             {
-
                 var bs = PathfindingSystem.GetBoardState();
 
                 // really simple solution to make the inky & blinky ai seem different
-                Vector2 inkyMapPos = MainWindow.ToMapPos(MainWindow.GetEntityByType<Inky>().position);
+                foreach (var ghost in MainWindow.GetEntitiesByType<Ghost>())
+                {
+                    if (ghost == this)
+                        continue;
 
-                bs[(int)inkyMapPos.X][(int)inkyMapPos.Y] = PathfindingSystem.TileState.BLOCKED;
+                    Vector2 ghostPos = MainWindow.ToMapPos(ghost.position);
+                    bs[(int)ghostPos.Y][(int)ghostPos.X] = PathfindingSystem.TileState.BLOCKED;
+                }
 
                 path = PathfindingSystem.TryGetPath(
                         bs,
@@ -68,6 +72,12 @@ namespace WpfApp1.src.entities.impl.ghosts
 
                 position = MainWindow.ToScreenPos(mapPos);
                 lastMoveTime = DateTime.Now;
+            }
+
+
+            if (MainWindow.ToMapPos(position) == pacmanMapPos)
+            {
+                throw new Exception("U died stupid idiot!");
             }
         }
     }
