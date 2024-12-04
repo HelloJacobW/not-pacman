@@ -6,6 +6,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using WpfApp1;
 using WpfApp1.src;
+using WpfApp1.src.board;
 using WpfApp1.src.helpers;
 
 public class Pacman : Entity
@@ -30,19 +31,19 @@ public class Pacman : Entity
 
      if((DateTime.Now - elapsedTime).TotalMilliseconds >= 250)
         {
-
             Vector2 futurePos = position;
+            Vector2 playerMapPos = MainWindow.ToMapPos(position);
 
             if (moveDirection == MoveDirection.RIGHT)
             {
                 futurePos.X += (float)(20f);
             }
-            if (moveDirection == MoveDirection.LEFT)
+            if (moveDirection == MoveDirection.LEFT && playerMapPos.X != 0)
             {
                 futurePos.X -= (float)(20f);
             }
 
-            if (moveDirection == MoveDirection.UP)
+            if (moveDirection == MoveDirection.UP && playerMapPos.Y != 0)
             {
                 futurePos.Y -= (float)(20f);
             }
@@ -57,6 +58,11 @@ public class Pacman : Entity
             }
             
             elapsedTime = DateTime.Now;
+
+            if (MainWindow.board[(int) playerMapPos.X,(int) playerMapPos.Y] == TileType.DOT)
+            {
+                MainWindow.board[(int)playerMapPos.X, (int)playerMapPos.Y] = TileType.EMPTY;
+            }
         }
     }
 
@@ -75,7 +81,7 @@ public class Pacman : Entity
         {
             moveDirection = MoveDirection.RIGHT;
         }
-        if(e.Key == Key.A)
+        if(e.Key == Key.A && position.X != 0)
         {
             moveDirection = MoveDirection.LEFT;
         }
