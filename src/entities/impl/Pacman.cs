@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Numerics;
 using System.Windows.Input;
@@ -7,6 +8,7 @@ using System.Windows.Shapes;
 using WpfApp1;
 using WpfApp1.src;
 using WpfApp1.src.board;
+using WpfApp1.src.entities.impl;
 using WpfApp1.src.helpers;
 
 public class Pacman : Entity
@@ -61,7 +63,16 @@ public class Pacman : Entity
 
             if (MainWindow.board[(int) playerMapPos.X,(int) playerMapPos.Y] == TileType.DOT)
             {
-                MainWindow.board[(int)playerMapPos.X, (int)playerMapPos.Y] = TileType.EMPTY;
+                foreach (var dot in MainWindow.GetEntitiesByType<DotEntity>())
+                {
+                    Vector2 dotMapPos = MainWindow.ToMapPos(dot.position);
+
+                    if (dotMapPos == position)
+                    {
+                        Debug.Write($"destroyed {dot}");
+                        dot.destroy();
+                    }
+                }
             }
         }
     }
