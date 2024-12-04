@@ -65,6 +65,7 @@ public class Pacman : Entity
             {
                 foreach (var dot in MainWindow.GetEntitiesByType<DotEntity>())
                 {
+                    Vector2 playerMapPos = MainWindow.ToMapPos(position);
                     Vector2 dotMapPos = MainWindow.ToMapPos(dot.position);
                 //    Debug.WriteLine(dotMapPos == playerMapPos);
 
