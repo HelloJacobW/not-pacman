@@ -10,6 +10,7 @@ using System.Windows.Media;
 using WpfApp1.src;
 using WpfApp1.src.board;
 using WpfApp1.src.entities.impl;
+using WpfApp1.src.entities.impl.ghosts;
 
 namespace WpfApp1
 {
@@ -37,6 +38,7 @@ namespace WpfApp1
             entities.Add(new Pacman());
 
             //  - add the ghosts
+            entities.Add(new Blinky());
 
             //  - add the dots
             for (int i = 0; i < board.GetLength(0); i++)
@@ -77,7 +79,10 @@ namespace WpfApp1
             double deltaTime = (DateTime.Now - lastFrameTime).TotalMilliseconds / 1000;
             lastFrameTime = DateTime.Now;
 
-            foreach (var entity in entities)
+            List<Entity> cloned = new List<Entity>();
+            cloned.AddRange(entities);
+
+            foreach (var entity in cloned)
             {
                 entity.update(deltaTime);
                 entity.draw();
