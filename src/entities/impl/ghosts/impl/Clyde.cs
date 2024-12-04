@@ -2,14 +2,10 @@
 
 namespace WpfApp1.src.entities.impl.ghosts
 {
-    class Clyde : Ghost
+    class Clyde : Blinky
     {
         public Clyde() : base() {
-        }
-
-        public override void update(double deltaTime)
-        {
-            // movement logic
+            SpriteShape.Fill = Brushes.Orange;
         }
     }
 }

@@ -1,15 +1,17 @@
-﻿using System.Windows.Media;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Numerics;
+using System;
+using System.Windows.Media;
+using WpfApp1.src.entities.impl.ghosts.impl.helpers;
 
 namespace WpfApp1.src.entities.impl.ghosts
 {
-    class Inky : Ghost
+    class Inky : Blinky
     {
-        public Inky() : base() {
-        }
-
-        public override void update(double deltaTime)
+        public Inky() : base()
         {
-            // movement logic
+            SpriteShape.Fill = Brushes.Cyan;
         }
     }
 }

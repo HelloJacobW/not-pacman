@@ -39,6 +39,9 @@ namespace WpfApp1
 
             //  - add the ghosts
             entities.Add(new Blinky());
+            entities.Add(new Inky());
+            entities.Add(new Pinky());
+            entities.Add(new Clyde());
 
             //  - add the dots
             for (int i = 0; i < board.GetLength(0); i++)

@@ -31,7 +31,7 @@ public class Pacman : Entity
     public override void update(double deltaTime)
     {
 
-     if((DateTime.Now - elapsedTime).TotalMilliseconds >= 250)
+     if((DateTime.Now - elapsedTime).TotalMilliseconds >= 200)
         {
             Vector2 futurePos = MainWindow.ToMapPos(position);
             //Vector2 playerMapPos = MainWindow.ToMapPos(position);
@@ -97,6 +97,9 @@ public class Pacman : Entity
         {
             moveDirection = MoveDirection.LEFT;
         }
+
+        if (e.Key == Key.Space)
+            moveDirection = MoveDirection.NONE;
     }
 
     public void OnKeyUp(KeyEventArgs e)
@@ -105,6 +108,8 @@ public class Pacman : Entity
 
     private bool DoesIntersect(Vector2 pos)
     {
+        return false;
+
         Debug.WriteLine(pos.X+$" ({pos.X}), "+ pos.Y + $" ({pos.Y})");
         var playerRect = new WpfApp1.src.helpers.Rectangle(pos.X+0.5f, pos.Y+0.5f, .1f, .1f);
         
