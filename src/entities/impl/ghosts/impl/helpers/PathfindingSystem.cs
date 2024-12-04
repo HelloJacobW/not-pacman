@@ -59,6 +59,43 @@ namespace WpfApp1.src.entities.impl.ghosts.impl.helpers
             return null; // No path found
         }
 
+        public static List<List<PathfindingSystem.TileState>> GetBoardState()
+        {
+            int boardWidth = 28; // Assuming the width of the board
+            int boardHeight = 31; // Assuming the height of the board
+
+            // Initialize the board with false values
+            List<List<PathfindingSystem.TileState>> board = new List<List<PathfindingSystem.TileState>>();
+            for (int y = 0; y < boardHeight; y++)
+            {
+                List<PathfindingSystem.TileState> row = new List<PathfindingSystem.TileState>();
+                for (int x = 0; x < boardWidth; x++)
+                {
+                    row.Add(PathfindingSystem.TileState.OPEN);
+                }
+                board.Add(row);
+            }
+
+            // Mark the spots occupied by walls as true
+            foreach (var wall in Constants.walls)
+            {
+                int startX = (int)wall.x;
+                int startY = (int)wall.y;
+                int endX = (int)(wall.x + wall.width);
+                int endY = (int)(wall.y + wall.height);
+
+                for (int y = startY; y < endY; y++)
+                {
+                    for (int x = startX; x < endX; x++)
+                    {
+                        board[y][x] = PathfindingSystem.TileState.BLOCKED;
+                    }
+                }
+            }
+
+            return board;
+        }
+
         // Heuristic: Using Manhattan distance
         private static float Heuristic(Vector2 a, Vector2 b)
         {
