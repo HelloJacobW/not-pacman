@@ -21,5 +21,12 @@ namespace WpfApp1.src.entities.impl
         public override void update(double deltaTime)
         {
         }
+
+        public override void destroy()
+        {
+            base.destroy();
+            Vector2 pos = MainWindow.ToMapPos(position);
+            MainWindow.board[(int) pos.X, (int)pos.Y] = board.TileType.EMPTY;
+        }
     }
 }
