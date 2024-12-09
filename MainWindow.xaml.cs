@@ -56,7 +56,14 @@ namespace WpfApp1
                 }
             }
 
-            //  - add the walls
+            // - add the barrier infront of ghosts
+            entities.Add(new Barrier(
+                ToScreenPos(new Vector2(13 - .8f, 12)),
+                (float)(60),
+                (float)(11)
+                ));
+
+            //  - add the main walls
             foreach (var wall in Constants.walls)
             {
                 var rel = ToScreenPos(new Vector2(wall.x, wall.y));
@@ -67,6 +74,17 @@ namespace WpfApp1
                         (float)(wall.height * 20) - 5
                     ));
                 board[(int)wall.x, (int)wall.y] = TileType.WALL;
+            }
+            // - Make the walls "hollow" | fill them in with black
+            foreach (var wall in Constants.walls)
+            {
+                var rel = ToScreenPos(new Vector2(wall.x, wall.y));
+
+                entities.Add(new HollowWall(
+                    new Vector2(rel.X - 2.5f, rel.Y - 2.5f),
+                    (float)(wall.width * 20) - 5,
+                    (float)(wall.height * 20) - 5
+                    ));
             }
 
             // register the entities sprite shape with the canvas (make the entities appear on the screen)
