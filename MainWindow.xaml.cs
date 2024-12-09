@@ -68,6 +68,16 @@ namespace WpfApp1
                     ));
                 board[(int)wall.x, (int)wall.y] = TileType.WALL;
             }
+            foreach (var wall in Constants.walls)
+            {
+                var rel = ToScreenPos(new Vector2(wall.x, wall.y));
+
+                entities.Add(new HollowWall(
+                    new Vector2(rel.X - 2.5f, rel.Y - 2.5f),
+                    (float)(wall.width * 20) - 5,
+                    (float)(wall.height * 20) - 5
+                    ));
+            }
 
             // register the entities sprite shape with the canvas (make the entities appear on the screen)
             foreach (Entity entity in entities)

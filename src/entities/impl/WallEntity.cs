@@ -18,11 +18,26 @@ namespace WpfApp1.src.entities.impl
             SpriteShape.Fill = Brushes.Blue;
             collider = new(position.X, position.Y, width, heigth);
         }
-
         public override void update(double deltaTime)
         {
         
         }
 
+    }
+
+    public class HollowWall : Entity
+    {
+        public HollowWall(Vector2 position, float width, float heighth)
+        {
+            this.position = new Vector2(position.X + 5, position.Y + 5);
+            SpriteShape.Width = width - 10;
+            SpriteShape.Height = heighth - 10;
+            SpriteShape.Fill = Brushes.Black;
+        }
+
+        public override void update(double deltaTime)
+        {
+
+        }
     }
 }
