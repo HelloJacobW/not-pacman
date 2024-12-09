@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Numerics;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -9,6 +10,7 @@ using WpfApp1;
 using WpfApp1.src;
 using WpfApp1.src.board;
 using WpfApp1.src.entities.impl;
+using WpfApp1.src.entities.impl.ghosts.impl.helpers;
 using WpfApp1.src.helpers;
 
 public class Pacman : Entity
@@ -17,6 +19,8 @@ public class Pacman : Entity
 
     public DateTime elapsedTime;
 
+    private Vector2 mapPos = new Vector2(25, 25);
+
     public Pacman()
     {
         SpriteShape = new Ellipse();
@@ -24,8 +28,10 @@ public class Pacman : Entity
         SpriteShape.Width = 20;
         SpriteShape.Height = 20;
 
-        position = new System.Numerics.Vector2(25, 25);
         elapsedTime = DateTime.Now;
+
+        position = MainWindow.ToMapPos(mapPos);
+        update(0d);
     }
 
     public override void update(double deltaTime)
@@ -33,7 +39,7 @@ public class Pacman : Entity
 
      if((DateTime.Now - elapsedTime).TotalMilliseconds >= 200)
         {
-            Vector2 futurePos = MainWindow.ToMapPos(position);
+            Vector2 futurePos = mapPos;
             //Vector2 playerMapPos = MainWindow.ToMapPos(position);
 
             if (moveDirection == MoveDirection.RIGHT)
@@ -57,27 +63,37 @@ public class Pacman : Entity
             if (!DoesIntersect(futurePos))
             {
                 position = MainWindow.ToScreenPos(futurePos);
+                mapPos = futurePos;
             }
-            
+
             elapsedTime = DateTime.Now;
 
-            if (MainWindow.board[(int) futurePos.X,(int) futurePos.Y] == TileType.DOT)
+            try
             {
-                foreach (var dot in MainWindow.GetEntitiesByType<DotEntity>())
+                if (MainWindow.board[(int) futurePos.X,(int) futurePos.Y] == TileType.DOT)
                 {
-                    Vector2 playerMapPos = MainWindow.ToMapPos(position);
-                    Vector2 dotMapPos = MainWindow.ToMapPos(dot.position);
-                //    Debug.WriteLine(dotMapPos == playerMapPos);
-
-                    if (dotMapPos == playerMapPos)
+                    foreach (var dot in MainWindow.GetEntitiesByType<DotEntity>())
                     {
-                        Debug.WriteLine($"destroyed {dot}");
-                        dot.destroy();
+                        Vector2 playerMapPos = MainWindow.ToMapPos(position);
+                        Vector2 dotMapPos = MainWindow.ToMapPos(dot.position);
+
+                        if (dotMapPos == playerMapPos)
+                        {
+                            Debug.WriteLine($"destroyed {dot}");
+                            dot.destroy();
+                        }
                     }
                 }
-            }
+            } catch (Exception ex) { }
         }
     }
+
+    public override void draw()
+    {
+        Canvas.SetLeft(SpriteShape, position.X + (SpriteShape.Width / 2) - 15);
+        Canvas.SetTop(SpriteShape, position.Y + (SpriteShape.Height / 2) - 15);
+    }
+
 
     public void OnKeyDown(KeyEventArgs e)
     {
@@ -109,16 +125,11 @@ public class Pacman : Entity
 
     private bool DoesIntersect(Vector2 pos)
     {
-        return false;
-
-        Debug.WriteLine(pos.X+$" ({pos.X}), "+ pos.Y + $" ({pos.Y})");
-        var playerRect = new WpfApp1.src.helpers.Rectangle(pos.X+0.5f, pos.Y+0.5f, .1f, .1f);
-        
+        var playerRect = new WpfApp1.src.helpers.Rectangle(pos.X, pos.Y, 1f, 1f);
         foreach (var wall in Constants.walls)
-        {
             if (wall.Intersects(playerRect))
                 return true;
-        }
+
 
         return false;
     }

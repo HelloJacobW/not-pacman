@@ -10,7 +10,7 @@ public abstract class Entity
 
     public abstract void update(double deltaTime);
 
-    public void draw() {
+    public virtual void draw() {
         Canvas.SetLeft(SpriteShape, position.X);
         Canvas.SetTop(SpriteShape, position.Y);
     }
