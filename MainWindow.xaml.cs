@@ -23,7 +23,6 @@ namespace WpfApp1
         public static TileType[,] board = new TileType[28,36];
 
 
-
         public MainWindow()
         {
             // Setup window
@@ -52,7 +51,7 @@ namespace WpfApp1
                         continue;
 
                     // check if the dots would spawn in the ghost room, if so dont spawn
-                    //ghost room range x = 10 -> 16, y = 13 -> 15
+                    //ghost room range x = 10 -> 16 || y = 13 -> 15
                     if (!(9 < i && i < 17) || !(12 < j && j < 16))
                         {
                         board[i, j] = TileType.DOT;
