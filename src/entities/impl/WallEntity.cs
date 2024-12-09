@@ -22,7 +22,6 @@ namespace WpfApp1.src.entities.impl
         {
         
         }
-
     }
 
     public class HollowWall : Entity
@@ -33,6 +32,24 @@ namespace WpfApp1.src.entities.impl
             SpriteShape.Width = width - 10;
             SpriteShape.Height = heighth - 10;
             SpriteShape.Fill = Brushes.Black;
+        }
+
+        public override void update(double deltaTime)
+        {
+
+        }
+    }
+
+    public class Barrier : Entity
+    {
+        public helpers.Rectangle collider = new(0, 0, 0, 0);
+        public Barrier(Vector2 position, float width, float heigth)
+        {
+            this.position = position;
+            SpriteShape.Width = width;
+            SpriteShape.Height = heigth;
+            SpriteShape.Fill = Brushes.WhiteSmoke;
+            collider = new(position.X, position.Y, width, heigth);
         }
 
         public override void update(double deltaTime)
