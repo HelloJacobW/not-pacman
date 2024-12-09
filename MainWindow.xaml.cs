@@ -51,8 +51,11 @@ namespace WpfApp1
                     if (WouldBeInWall(i, j))
                         continue;
 
-                    board[i, j] = TileType.DOT;
-                    entities.Add(new DotEntity(ToScreenPos(new Vector2(i, j))));
+                    if (!(9 < i && i < 17) || !(12 < j && j < 16))
+                        {
+                        board[i, j] = TileType.DOT;
+                        entities.Add(new DotEntity(ToScreenPos(new Vector2(i, j))));
+                        }
                 }
             }
 
@@ -75,6 +78,7 @@ namespace WpfApp1
                     ));
                 board[(int)wall.x, (int)wall.y] = TileType.WALL;
             }
+
             // - Make the walls "hollow" | fill them in with black
             foreach (var wall in Constants.walls)
             {
