@@ -14,10 +14,10 @@ using WpfApp1.src.entities.impl;
 public class Pacman : Entity
 {
     private MoveDirection moveDirection = MoveDirection.NONE;
-    private MoveDirection nextMoveDirection = MoveDirection.NONE;
+    // private MoveDirection nextMoveDirection = MoveDirection.NONE;
 
     public DateTime elapsedTime;
-    private Vector2 mapPos = new Vector2(25, 25);
+    private Vector2 mapPos = new Vector2(14, 23);
 
     private Vector2 portalOne = new Vector2(1, 14);
     private Vector2 portalTwo = new Vector2(26, 14);
@@ -32,12 +32,13 @@ public class Pacman : Entity
 
         elapsedTime = DateTime.Now;
 
-        position = MainWindow.ToMapPos(mapPos);
-        update(0d);
+        position = MainWindow.ToScreenPos(mapPos);
     }
 
     public override void update(double deltaTime)
     {
+
+        Trace.WriteLine($"{position.X},{position.Y} ({mapPos.X},{mapPos.Y}");
 
         if (Vector2.Distance(mapPos, portalOne) == 0)
         {
@@ -113,26 +114,30 @@ public class Pacman : Entity
 
     public void OnKeyDown(KeyEventArgs e)
     {
+        MoveDirection nextDirection = moveDirection;
+
         if (e.Key == Key.W || e.Key == Key.Up)
         {
-            moveDirection = MoveDirection.UP;
+            nextDirection = MoveDirection.UP;
         }
         if (e.Key == Key.S || e.Key == Key.Down)
         {
-            moveDirection = MoveDirection.DOWN;
+            nextDirection = MoveDirection.DOWN;
         }
 
         if (e.Key == Key.D || e.Key == Key.Right)
         {
-            moveDirection = MoveDirection.RIGHT;
+            nextDirection = MoveDirection.RIGHT;
         }
         if((e.Key == Key.A || e.Key == Key.Left) && position.X != 0)
         {
-            moveDirection = MoveDirection.LEFT;
+            nextDirection = MoveDirection.LEFT;
         }
 
+        // FOR DEBUGGING
         if (e.Key == Key.Space)
             moveDirection = MoveDirection.NONE;
+        moveDirection = nextDirection;
     }
 
     public void OnKeyUp(KeyEventArgs e)
@@ -148,6 +153,29 @@ public class Pacman : Entity
 
 
         return false;
+    }
+
+    private bool CanMoveDirection(Vector2 direction)
+    {
+        return DoesIntersect(mapPos + direction);
+
+    }
+
+    private Vector2 DirectionToVec(MoveDirection move)
+    {
+        switch (move)
+        {
+            case MoveDirection.UP:
+                return new Vector2(0f, -1f);
+            case MoveDirection.DOWN:
+                return new Vector2(0f, 1f);
+            case MoveDirection.LEFT:
+                return new Vector2(-1f, 0f);
+            case MoveDirection.RIGHT:
+                return new Vector2(1f, 0f);
+        }
+
+        return new Vector2(0f, 0f);
     }
 
     private enum MoveDirection
