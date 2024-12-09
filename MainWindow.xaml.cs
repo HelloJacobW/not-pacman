@@ -43,7 +43,7 @@ namespace WpfApp1
             entities.Add(new Pinky());
             entities.Add(new Clyde());
 
-            //  - add the dots
+            //  - add the dots || i = x pos, j = y pos
             for (int i = 0; i < board.GetLength(0); i++)
             {
                 for (int j = 0; j < board.GetLength(1); j++)
@@ -51,6 +51,8 @@ namespace WpfApp1
                     if (WouldBeInWall(i, j))
                         continue;
 
+                    // check if the dots would spawn in the ghost room, if so dont spawn
+                    //ghost room range x = 10 -> 16, y = 13 -> 15
                     if (!(9 < i && i < 17) || !(12 < j && j < 16))
                         {
                         board[i, j] = TileType.DOT;
